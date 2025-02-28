@@ -32,7 +32,7 @@ class _ExpensesState extends State<Expenses> {
       body: Center(
         child: Column(
           children: [
-            Text('THe Charts'),
+            Text('The Charts'),
             Expanded(child: ExpensesList(expenses: _registeredExpense)),
           ],
         ),

@@ -29,7 +29,7 @@ class _NewExpenseState extends State<NewExpense> {
           // title
           TextField(
             controller: _titleController,
-            maxLength: 20,
+            maxLength: 40,
             decoration: InputDecoration(label: Text('Title')),
           ),
 
@@ -38,7 +38,8 @@ class _NewExpenseState extends State<NewExpense> {
             controller: _amountController,
             maxLength: 6,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(label: Text('Amount')),
+
+            decoration: InputDecoration(prefixText: '₹', label: Text('Amount')),
           ),
 
           Row(

@@ -29,11 +29,11 @@ class _ExpensesState extends State<Expenses> {
   ];
 
   void openAddExpense() {
-    //
+    // add expense item
     showModalBottomSheet(
       backgroundColor: Colors.green,
       context: context,
-      builder: (ctx) => NewExpense(),
+      builder: (ctx) => const NewExpense(),
     );
   }
 
@@ -41,13 +41,13 @@ class _ExpensesState extends State<Expenses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Expense Tracker'),
+        title: const Text('Expense Tracker'),
         actions: [IconButton(onPressed: openAddExpense, icon: Icon(Icons.add))],
       ),
       body: Center(
         child: Column(
           children: [
-            Text('The Charts'),
+            const Text('The Charts'),
             Expanded(child: ExpensesList(expenses: _registeredExpense)),
           ],
         ),

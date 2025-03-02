@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_print
+
+import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
@@ -20,6 +23,25 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
+  Category _selectedCategory = Category.leisure;
+
+  DateTime? selectedDate;
+
+  // date picker
+  void datePicker() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 1, now.month, now.day);
+    final pickedDate = await showDatePicker(
+      context: context,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+    setState(() {
+      selectedDate = pickedDate;
+      print('selected date ------ > $pickedDate');
+    });
+  }
+
   @override
   Widget build(context) {
     return Padding(
@@ -30,35 +52,91 @@ class _NewExpenseState extends State<NewExpense> {
           TextField(
             controller: _titleController,
             maxLength: 40,
-            decoration: InputDecoration(label: Text('Title')),
+            decoration: InputDecoration(label: const Text('Title')),
           ),
+          Row(
+            children: [
+              // amount
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  maxLength: 6,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    prefixText: '₹',
+                    label: const Text('Amount'),
+                  ),
+                ),
+              ),
+              //spacing
+              const SizedBox(width: 16),
 
-          // amount
-          TextField(
-            controller: _amountController,
-            maxLength: 6,
-            keyboardType: TextInputType.number,
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // selected date
+                    GestureDetector(
+                      onTap: datePicker,
+                      child: Text(
+                        selectedDate == null
+                            ? 'Select Date'
+                            : dateFormatter.format(selectedDate!),
+                      ),
+                    ),
 
-            decoration: InputDecoration(prefixText: '₹', label: Text('Amount')),
+                    // date picker
+                    IconButton(
+                      onPressed: datePicker,
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            // mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                items:
+                    Category.values
+                        .map(
+                          (category) => DropdownMenuItem(
+                            value: category,
+                            child: Text(category.name),
+                          ),
+                        )
+                        .toList(),
+                onChanged: (value) {
+                  if (value == null) {
+                    return;
+                  }
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                },
+              ),
               // cancel button
               TextButton(
                 onPressed: () {
                   print('Cancel button pressed');
                   Navigator.pop(context);
                 },
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
               // submit button
               ElevatedButton(
                 onPressed: () {
-                  print('Entered --------->  ${_titleController.text}');
+                  print('Title --------->  ${_titleController.text}');
+                  print('Amount --------->  ${_amountController.text}');
+                  print('Date --------->  $selectedDate');
+                  print('Save pressed --------->  ${_amountController.text}');
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),

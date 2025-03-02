@@ -14,13 +14,13 @@ class ExpensesItem extends StatelessWidget {
         child: Column(
           children: [
             Text(expense.title),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               children: [
                 Text(
                   "₹${expense.amount.toStringAsFixed(2)}",
                 ), // 12.8056 => 12.80
-                Spacer(),
+                const Spacer(),
                 Row(
                   children: [
                     Icon(categoryIcons[expense.category]),

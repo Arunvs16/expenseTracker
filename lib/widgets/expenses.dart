@@ -32,7 +32,6 @@ class _ExpensesState extends State<Expenses> {
     // add expense item
     showModalBottomSheet(
       isScrollControlled: true,
-      backgroundColor: Colors.blueGrey[500],
       context: context,
       builder: (ctx) => NewExpense(onAddExpense: _addExpense),
     );

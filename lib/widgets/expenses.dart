@@ -31,15 +31,24 @@ class _ExpensesState extends State<Expenses> {
   void openAddExpense() {
     // add expense item
     showModalBottomSheet(
-      backgroundColor: Colors.green,
+      isScrollControlled: true,
+      backgroundColor: Colors.blueGrey[500],
       context: context,
       builder: (ctx) => NewExpense(onAddExpense: _addExpense),
     );
   }
 
+  // add expense method
   void _addExpense(Expense expense) {
     setState(() {
       _registeredExpense.add(expense);
+    });
+  }
+
+  // remove expense method
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpense.remove(expense);
     });
   }
 
@@ -54,7 +63,12 @@ class _ExpensesState extends State<Expenses> {
         child: Column(
           children: [
             const Text('The Charts'),
-            Expanded(child: ExpensesList(expenses: _registeredExpense)),
+            Expanded(
+              child: ExpensesList(
+                expenses: _registeredExpense,
+                onRemoveExpense: _removeExpense,
+              ),
+            ),
           ],
         ),
       ),

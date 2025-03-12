@@ -23,6 +23,7 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
+  // variable to store selected category
   Category _selectedCategory = Category.leisure;
 
   DateTime? selectedDate;
@@ -40,6 +41,39 @@ class _NewExpenseState extends State<NewExpense> {
       selectedDate = pickedDate;
       print('selected date ------ > $pickedDate');
     });
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(
+      _amountController.text,
+    ); // tryParse('Hello') => null, tryParse('123') => 123
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        selectedDate == null) {
+      // show error meassage
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text('Invalid Input'),
+            content: const Text(
+              'Please make sure a valid title, amount, date and category was entered.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: const Text('Okay'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    //
   }
 
   @override
@@ -96,10 +130,11 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ],
           ),
-
+          const SizedBox(height: 16),
           Row(
             // mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              // DropdownButton
               DropdownButton(
                 value: _selectedCategory,
                 items:
@@ -107,7 +142,7 @@ class _NewExpenseState extends State<NewExpense> {
                         .map(
                           (category) => DropdownMenuItem(
                             value: category,
-                            child: Text(category.name),
+                            child: Text(category.name.toUpperCase()),
                           ),
                         )
                         .toList(),
@@ -120,6 +155,7 @@ class _NewExpenseState extends State<NewExpense> {
                   });
                 },
               ),
+              const Spacer(),
               // cancel button
               TextButton(
                 onPressed: () {
@@ -131,6 +167,7 @@ class _NewExpenseState extends State<NewExpense> {
               // submit button
               ElevatedButton(
                 onPressed: () {
+                  _submitExpenseData();
                   print('Title --------->  ${_titleController.text}');
                   print('Amount --------->  ${_amountController.text}');
                   print('Date --------->  $selectedDate');

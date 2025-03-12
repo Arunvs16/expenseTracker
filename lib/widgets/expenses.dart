@@ -33,8 +33,14 @@ class _ExpensesState extends State<Expenses> {
     showModalBottomSheet(
       backgroundColor: Colors.green,
       context: context,
-      builder: (ctx) => const NewExpense(),
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
     );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpense.add(expense);
+    });
   }
 
   @override
